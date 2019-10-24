@@ -1,0 +1,16 @@
+{
+  "name": "graphmongo",
+  "version": "1.0.0",
+  "main": "server.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon -r esm server.js"
+  },
+  "dependencies": {
+    "apollo-server": "^2.9.7",
+    "esm": "^3.2.25",
+    "graphql": "^14.5.8",
+    "mongoose": "^5.7.6",
+    "nodemon": "^1.19.4"
+  }
+}

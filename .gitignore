@@ -1,0 +1,5 @@
+# nodes modules folder
+node_modules
+
+# vs code params
+.vscode
