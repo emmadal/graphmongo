@@ -5,11 +5,12 @@ import mongoose from "mongoose";
 
 const app = new ApolloServer({ typeDefs, resolvers });
 
+//asynchronous function that allow us to connect on our database
 const dbConnect = async url => {
   try {
     await mongoose.connect(url, {
       useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true //used for Mongo Atlas instead of local database
     });
     console.log("connected to database");
   } catch (error) {
@@ -19,7 +20,8 @@ const dbConnect = async url => {
   }
 };
 
+//starting our GraphQL server...
 app.listen().then(({ url }) => {
   dbConnect("mongodb://localhost:27017/graphdb");
-  console.log(`:rocket: server started at ${url}`);
+  console.log(`:rocket: GraphQL server started at ${url}`);
 });

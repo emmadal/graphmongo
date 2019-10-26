@@ -35,7 +35,7 @@ export const resolvers = {
           },
           { new: true }
         );
-        console.log("User infos updated")
+        console.log("User infos updated");
         return await usersModel.findById(id);
       } catch (error) {
         throw error || console.log("update failed. Please try again");
