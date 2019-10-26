@@ -2,7 +2,10 @@ import { usersModel } from "./db/models";
 
 export const resolvers = {
   Query: {
+    // ton async await sert a rien ici, tu peu retourner direct
     users: async () => await usersModel.find().sort({ name: 1 }),
+    
+    // console.log c'est pas vraiment une bonne facon de gerer les erreurs, pas a ce niveau en tout cas
     oneuser: async (_, { id }) => {
       return (
         (await usersModel.findById(id)) ||
@@ -13,6 +16,9 @@ export const resolvers = {
   Mutation: {
     createUser: (_, { input }) => {
       const new_user = usersModel(input);
+      // le save est async non ? du coup tu devrais pas avoir une promise ici ?
+      // un await quelque part ou retourner une promise
+      // et pareil pour le console.log, c'est pas vraiment une gestion d'erreur la
       new_user.save(err => {
         err ? console.log("error handled") : console.log("user registered.");
       });
@@ -21,8 +27,17 @@ export const resolvers = {
     deleteUser: async (_, { id }) => {
       try {
         await usersModel.deleteOne({ _id: id });
+        // je sais pas si t'a fait un retunr await expres pour qu'il soit pris dans ton catch
+        // mais vu que ton catch sert a rien la
+        // j'pense que tu peu juste return sans await
+        
+        // pourquoi tu fait un find apres ton delete ?
         return await usersModel.find().sort({ name: 1 });
       } catch (error) {
+        // ca c'est etrange, t'aura toujours une valeur dans ton throw
+        // et si t'en avais pas tu afficherais ton log certe, mais tu ferai un 
+        // re-throw de `undefined` vu que ca sera la valeur de retour de ton
+        // console.log qui va etre throw
         throw error || console.log("user doesn't exist!");
       }
     },
@@ -30,14 +45,15 @@ export const resolvers = {
       try {
         await usersModel.updateOne(
           { _id: id },
-          {
-            $set: input
-          },
+          { $set: input },
           { new: true }
         );
         console.log("User infos updated");
+        // t'est sur que tu veut re-query la db apres ton update ?
+        // t'a besoin de retourner le user ?
         return await usersModel.findById(id);
       } catch (error) {
+        // pareil que la haut
         throw error || console.log("update failed. Please try again");
       }
     }
