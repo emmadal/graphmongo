@@ -7,10 +7,15 @@ const app = new ApolloServer({ typeDefs, resolvers });
 
 const dbConnect = async url => {
   try {
-    await mongoose.connect(url, { useNewUrlParser: true });
+    await mongoose.connect(url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
     console.log("connected to database");
   } catch (error) {
-    console.log("Database not available. Please ensure you that the mongod.service is enable.");
+    console.log(
+      "Database not available. Please ensure you that the mongod.service is enable."
+    );
   }
 };
 
